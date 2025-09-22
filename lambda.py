@@ -10,7 +10,7 @@ S3_CLIENT = boto3.client('s3')
 def get_keys(bucket: str, prefix: str) -> list[dict]:
     paginator = S3_CLIENT.get_paginator('list_objects_v2')
     page_iterator = paginator.paginate(Bucket=bucket, Prefix=prefix)
-    return [item['Key'] for page in page_iterator for item in page['Contents']]
+    return [item['Key'] for page in page_iterator for item in page.get('Contents', [])]
 
 
 def process_product(log_bucket_name: str, prefix: str, output_bucket_name: str) -> None:

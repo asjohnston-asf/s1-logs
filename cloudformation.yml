@@ -80,7 +80,7 @@ Resources:
         - ReportBatchItemFailures
       BatchSize: 1
       ScalingConfig:
-        MaximumConcurrency: 10
+        MaximumConcurrency: 100
 
   LambdaLogGroup:
     Type: AWS::Logs::LogGroup
