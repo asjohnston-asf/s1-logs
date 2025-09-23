@@ -22,9 +22,9 @@ def process_product(log_bucket_name: str, prefix: str, output_bucket_name: str) 
         for line in log_content.splitlines():
             tokens = line.split()
             method = tokens[7]
-            status_code = tokens[12]
+            status_code = tokens[10]
             if method in ('REST.GET.OBJECT', 'REST.COPY.PART_GET', 'REST.COPY.OBJECT_GET') and status_code in ('200', '206'):
-                key = tokens[10]
+                key = tokens[8]
                 date = datetime.strptime(tokens[2][1:12], '%d/%b/%Y')
                 output.add(f'{key},{date.strftime("%Y-%m-%d")}\n')
     S3_CLIENT.put_object(Bucket=output_bucket_name, Key=prefix, Body=''.join(output))
