@@ -23,7 +23,7 @@ def process_product(log_bucket_name: str, prefix: str, output_bucket_name: str) 
             tokens = line.split()
             method = tokens[7]
             status_code = tokens[12]
-            if method == 'REST.GET.OBJECT' and status_code in ('200', '206'):
+            if method in ('REST.GET.OBJECT', 'REST.COPY.PART_GET', 'REST.COPY.OBJECT_GET') and status_code in ('200', '206'):
                 key = tokens[10]
                 date = datetime.strptime(tokens[2][1:12], '%d/%b/%Y')
                 output.add(f'{key},{date.strftime("%Y-%m-%d")}\n')
