@@ -2,7 +2,7 @@ from collections import defaultdict
 import json
 
 access = defaultdict(list)
-with open('/home/asjohnston/tmp/all_access.csv') as f:
+with open('/home/asjohnston/tmp/access_dates.csv') as f:
     for line in f:
         granule_name, dt = line.strip().split(',')
         access[granule_name].append(dt)
@@ -17,7 +17,7 @@ for item in inventory:
         'c': create_date,
         's': int(size),
         'a': access[granule_name],
-    },
+    }
 
 with open('aggregated.json', 'w') as f:
     json.dump(data, f, separators=(',', ':'))
