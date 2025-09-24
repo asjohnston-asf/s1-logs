@@ -22,13 +22,13 @@ def submit_batch(batch: list[str]) -> None:
 
 
 interval = timedelta(minutes=1)
-current = datetime(2025, 9, 1)
-end = datetime(2025, 9, 23)
+current = datetime(2025, 6, 1)
+end = datetime(2025, 9, 1)
 
 prefixes = []
 while current < end:
     prefixes.append(f's3-access/grfn-content-prod/{current.strftime("%Y-%m-%d-%H-%M")}')
     current += interval
 
-with ThreadPoolExecutor(max_workers=5) as executor:
+with ThreadPoolExecutor(max_workers=10) as executor:
     executor.map(submit_batch, chunks(prefixes, 1000))

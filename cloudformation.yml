@@ -27,8 +27,8 @@ Resources:
   Lambda:
     Type: AWS::Lambda::Function
     Properties:
-      Code: lambda.py
-      Handler: lambda.lambda_handler
+      Code: app.py
+      Handler: app.lambda_handler
       MemorySize: 512
       Role: !GetAtt LambdaRole.Arn
       Runtime: python3.13
@@ -80,7 +80,7 @@ Resources:
         - ReportBatchItemFailures
       BatchSize: 1
       ScalingConfig:
-        MaximumConcurrency: 100
+        MaximumConcurrency: 200
 
   LambdaLogGroup:
     Type: AWS::Logs::LogGroup
