@@ -21,13 +21,13 @@ def submit_batch(batch: list[str]) -> None:
         sqs.send_message_batch(QueueUrl=queue_url, Entries=messages)
 
 
-interval = timedelta(minutes=1)
-current = datetime(2025, 9, 1)
-end = datetime(2025, 9, 2)
+interval = timedelta(minutes=10)
+current = datetime(2025, 9, 24)
+end = datetime(2025, 9, 25)
 
 prefixes = []
 while current < end:
-    prefixes.append(f'asf-ngap2w-p-s1-xml{current.strftime("%Y-%m-%d-%H-%M")}')
+    prefixes.append(f'asf-ngap2w-p-s1-xml{current.strftime("%Y-%m-%d-%H-%M")[:-1]}')
     current += interval
 
 with ThreadPoolExecutor(max_workers=10) as executor:

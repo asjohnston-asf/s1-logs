@@ -44,7 +44,8 @@ def process_product(log_bucket_name: str, prefix: str, output_bucket_name: str) 
         for log_event in get_log_events(log_bucket_name, key):
             if log_event['method'] in ('REST.GET.OBJECT', 'REST.COPY.PART_GET', 'REST.COPY.OBJECT_GET') and log_event['status_code'] in ('200', '206'):
                 output.add(f'{log_event["key"]},{log_event["date"].strftime("%Y-%m-%d")}\n')
-    OUTPUT_S3_CLIENT.put_object(Bucket=output_bucket_name, Key=prefix, Body=''.join(output))
+    if output:
+        OUTPUT_S3_CLIENT.put_object(Bucket=output_bucket_name, Key=prefix, Body=''.join(output))
 
 
 def lambda_handler(event: dict, _) -> dict:
