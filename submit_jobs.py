@@ -5,8 +5,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 import boto3
 
-os.environ['AWS_PROFILE'] = 'grfn'
-queue_url = 'https://sqs.us-east-1.amazonaws.com/406893895021/asj-logs-dev-Queue-oAM46NwYO4CV'
+os.environ['AWS_PROFILE'] = 'edc-sandbox'
+queue_url = 'https://sqs.us-west-2.amazonaws.com/011491233277/asj-s1-logs-Queue-SoOwb8HCFSYD'
 
 
 def chunks(lst, n=10):
@@ -22,12 +22,12 @@ def submit_batch(batch: list[str]) -> None:
 
 
 interval = timedelta(minutes=1)
-current = datetime(2025, 6, 1)
-end = datetime(2025, 9, 1)
+current = datetime(2025, 9, 1)
+end = datetime(2025, 9, 2)
 
 prefixes = []
 while current < end:
-    prefixes.append(f's3-access/grfn-content-prod/{current.strftime("%Y-%m-%d-%H-%M")}')
+    prefixes.append(f'asf-ngap2w-p-s1-xml{current.strftime("%Y-%m-%d-%H-%M")}')
     current += interval
 
 with ThreadPoolExecutor(max_workers=10) as executor:

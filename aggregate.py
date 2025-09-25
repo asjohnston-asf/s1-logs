@@ -2,12 +2,12 @@ from collections import defaultdict
 import json
 
 access = defaultdict(list)
-with open('/home/asjohnston/tmp/access_dates.csv') as f:
+with open('access_dates.csv') as f:
     for line in f:
         granule_name, dt = line.strip().split(',')
         access[granule_name].append(dt)
 
-with open('/home/asjohnston/tmp/inventory.csv') as f:
+with open('inventory.csv') as f:
     inventory = [line.strip() for line in f]
 
 data = {}

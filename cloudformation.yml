@@ -5,7 +5,20 @@ Parameters:
   LogBucket:
     Type: String
 
+  AccessKey:
+    Type: String
+    NoEcho: true
+
+  SecretKey:
+    Type: String
+    NoEcho: true
+
 Resources:
+
+  Secret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      SecretString: !Sub '{"aws_access_key_id": "${AccessKey}", "aws_secret_access_key": "${SecretKey}"}'
 
   Bucket:
     Type: AWS::S3::Bucket
@@ -37,6 +50,7 @@ Resources:
         Variables:
           LOG_BUCKET_NAME: !Ref LogBucket
           BUCKET_NAME: !Ref Bucket
+          SECRET_ARN: !Ref Secret
 
   LambdaRole:
     Type: AWS::IAM::Role
@@ -56,6 +70,9 @@ Resources:
               - Effect: Allow
                 Action: sqs:*
                 Resource: !GetAtt Queue.Arn
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: !Ref Secret
               - Effect: Allow
                 Action: s3:GetObject
                 Resource: !Sub "arn:aws:s3:::${LogBucket}/*"
