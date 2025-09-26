@@ -8,6 +8,17 @@ import boto3
 os.environ['AWS_PROFILE'] = 'edc-sandbox'
 queue_url = 'https://sqs.us-west-2.amazonaws.com/011491233277/asj-s1-logs-Queue-SoOwb8HCFSYD'
 
+log_prefixes = [
+    'asf-ngap2w-p-s1-xml',
+    'asf-ngap2w-p-s1-grd',
+    'asf-ngap2w-p-s1-ocn',
+    'asf-ngap2w-p-s1-slc',
+]
+
+current = datetime(2024, 4, 1)
+end = datetime(2025, 9, 30)
+interval = timedelta(minutes=10)
+
 
 def chunks(lst, n=10):
     for i in range(0, len(lst), n):
@@ -21,13 +32,10 @@ def submit_batch(batch: list[str]) -> None:
         sqs.send_message_batch(QueueUrl=queue_url, Entries=messages)
 
 
-interval = timedelta(minutes=10)
-current = datetime(2025, 9, 24)
-end = datetime(2025, 9, 25)
-
 prefixes = []
 while current < end:
-    prefixes.append(f'asf-ngap2w-p-s1-xml{current.strftime("%Y-%m-%d-%H-%M")[:-1]}')
+    for log_prefix in log_prefixes:
+        prefixes.append(f'{log_prefix}{current.strftime("%Y-%m-%d-%H-%M")[:-1]}')
     current += interval
 
 with ThreadPoolExecutor(max_workers=10) as executor:

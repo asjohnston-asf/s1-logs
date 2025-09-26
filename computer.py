@@ -35,12 +35,17 @@ for granule_name, item in data.items():
         else:
             tier = '3 - deep archive'
 
+        platform = granule_name[:3]
+        beam_mode = granule_name[4:6]
         product_type = granule_name[7:10]
-        output[f'{dt},{tier},{product_type}'] += item['s']
+        dual_single = granule_name[14]
+        polarization = granule_name[15]
+        acquisition_year = granule_name[17:21]
+        output[f'{dt},{tier},{platform},{beam_mode},{product_type},{dual_single},{polarization},{acquisition_year}'] += item['s']
 
         delta += 1
 
 with open('tiers.csv', 'w') as f:
-    f.write('date,tier,product type,volume\n')
+    f.write('date,tier,platform,beam mode,product type,dual/single,polarization,acquisition year,volume\n')
     for label, volume in output.items():
         f.write(f'{label},{volume}\n')
