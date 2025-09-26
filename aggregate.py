@@ -10,14 +10,15 @@ with open('access_dates.csv') as f:
 with open('inventory.csv') as f:
     inventory = [line.strip() for line in f]
 
-data = {}
+granules = []
 for item in inventory:
     create_date, size, granule_name = item.split(',')
-    data[granule_name] = {
+    granules.append({
+        'n': granule_name,
         'c': create_date,
         's': int(size),
         'a': access[granule_name],
-    }
+    })
 
 with open('aggregated.json', 'w') as f:
-    json.dump(data, f, separators=(',', ':'))
+    json.dump(granules, f, separators=(',', ':'))
