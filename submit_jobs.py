@@ -16,7 +16,7 @@ log_prefixes = [
 ]
 
 current = datetime(2024, 4, 1)
-end = datetime(2025, 9, 30)
+end = datetime(2025, 10, 1)
 interval = timedelta(minutes=10)
 
 
