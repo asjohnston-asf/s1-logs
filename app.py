@@ -27,8 +27,8 @@ def get_keys(bucket: str, prefix: str) -> list[str]:
 def get_user(line: list[str]) -> str:
     if 'DownloadRole' in line[5]:
         user_id = line[5].split('/')[-1]
-        if '@' in user_id and user_id.split('@')[-1].isdigit():
-            user_id = user_id.split('@')[0]
+        if '@' in user_id and (user_id.split('@')[-1].isdigit() or user_id.split('@')[-1] == ''):
+            user_id = f'{user_id.split("@")[0]}@us-west-2'
         return user_id
     if '&A-userid=' in line[9]:
         return line[9].split(' ')[1].split('=')[-1]
