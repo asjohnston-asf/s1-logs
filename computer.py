@@ -50,7 +50,7 @@ def process_granules(granules: list[dict]) -> defaultdict:
             dual_single = granule['n'][14]
             polarization = granule['n'][15]
             acquisition_year = granule['n'][17:21]
-            output[f'{month},{tier},{platform},{beam_mode},{product_type},{dual_single},{polarization},{acquisition_year}'] += granule['s']
+            output[f'{month},{tier},{platform},{beam_mode},{product_type},{dual_single},{polarization},{acquisition_year},{granule["r"]},{granule["C"]}'] += granule['s']
 
             delta += 1
     return output
@@ -64,6 +64,6 @@ with ProcessPoolExecutor(max_workers=10) as executor:
 
 
 with open('tiers.csv', 'w') as f:
-    f.write('month,tier,platform,beam mode,product type,dual/single,polarization,acquisition year,volume\n')
+    f.write('month,tier,platform,beam mode,product type,dual/single,polarization,acquisition year,region,continent,volume\n')
     for label, volume in output.items():
         f.write(f'{label},{volume}\n')
